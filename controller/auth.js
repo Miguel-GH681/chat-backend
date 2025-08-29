@@ -67,16 +67,15 @@ const login = async (req, res = response)=>{
 
 const renewToken = async (req, res)=>{
     try {
-        const { uid } = req.uid;
-        const token = await getJWT(uid);
-
-        const user = await User.findOne({uid});
-
+        const { uid } = req;
+        const token = await getJWT(uid);        
+        const user = await User.findById(uid);
+        
         res.json({
-        ok: true,
-        msg: user,
-        uid: token
-    })
+            ok: true,
+            msg: user,
+            token
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ok: false, msg: 'Comuníquese con el administrador'});        
